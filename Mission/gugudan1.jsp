@@ -13,7 +13,7 @@
 </head>
 <body>
 <%
-for (int i =2; i<=3; i++) {
+for (int i =2; i<=9; i++) {
 	out.println(String.format("<h2>%d 단</h2>",i));
 	for (int j = 1; j<=9; j++){
 		out.println(String.format("%d X %d = %d<br/>", i, j, i * j));
