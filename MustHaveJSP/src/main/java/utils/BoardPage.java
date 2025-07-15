@@ -6,7 +6,10 @@ public class BoardPage {
 		
 		String pagingStr="";
 		
+		// 전체 페이지 수 계산
 		int totalPages = (int)Math.ceil((double)totalCount / pageSize);
+		
+		
 		
 		int pageTemp = (((pageNum - 1 ) / blockPage) * blockPage) +1;
 		if (pageTemp != 1) {
