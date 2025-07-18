@@ -1,5 +1,6 @@
 package model2.mvcboard;
 
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model1.board.BoardDAO;
 
 @WebServlet("/mvcboard/view.do")
 public class ViewController extends HttpServlet {
@@ -44,7 +44,7 @@ public class ViewController extends HttpServlet {
 		// 게시물(dto) 저장 후 뷰로 포워드
 		req.setAttribute("dto", dto);
 		req.setAttribute("isImage", isImage);
-		req.getRequestDispatcher("/14MVCBoard.View.jsp").forward(req, resp);
+		req.getRequestDispatcher("/14MVCBoard/View.jsp").forward(req, resp);
 		
 	}
 	

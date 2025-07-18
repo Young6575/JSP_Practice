@@ -124,7 +124,7 @@ public class MVCBoardDAO extends JDBConnect {
 		try {
 			psmt = getCon().prepareStatement(query); // 쿼리문 준비
 			psmt.setString(1, idx); // 인파라미터 설정
-			psmt.executeQuery(); // 쿼리문 실행
+			rs = psmt.executeQuery(); // 쿼리문 실행
 		
 			if (rs.next()) { // 결과를 DTO에 객체에 저장
 				 dto.setIdx(rs.getString(1));
@@ -155,18 +155,97 @@ public class MVCBoardDAO extends JDBConnect {
 		try {
 			psmt = getCon().prepareStatement(query);
 			psmt.setString(1, idx);
-			psmt.executeQuery();
+			psmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("게시물 조회수 증가 중 예외 발생");
 			e.printStackTrace();
 		}
 	}
 	
+	public void downCountPlus(String idx) {
+		String query = "update mvcboard set "
+			 	 + " downcount = downcount + 1 "
+			 	 + "where idx = ? ";
+		try {
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, idx);
+			psmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("다운로드 수 증가 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	// 입력한 비밀번호가 지정한 일련번호의 게시물의 비밀번호와 일치하는지 확인합니다.
+	public boolean confirmPassword(String pass, String idx) {
+		boolean isCorr = true;
+		
+		try {
+			String query = "select count(*) "
+						 + " from mvcboard "
+						 + " where idx=? and pass=?;";
+			
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, idx);
+			psmt.setString(2, pass);
+			rs = psmt.executeQuery();
+			rs.next();
+			if (rs.getInt(1) == 0) {
+				isCorr = false;
+			}
+		} catch (Exception e) {
+			isCorr = false;
+			e.printStackTrace();
+		}
+		return isCorr;
+	}
+	
+	// 지정한 일련번호의 게시물을 삭제합니다.
+	public int deletePost(String idx) {
+		int result = 0;
+		try {
+			String query= "delete from mvcboard where idx=?";
+			
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, idx);
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("게시물 삭제 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
+	// 게시글 데이터를 받아 DB에 저장되어 있던 내용을 갱신합니다(파일 업로드 지원).
+	public int updatePost(MVCBoardDTO dto) {
+		int result = 0;
+		try {
+			String query = "update mvcboard "
+					 + " set title=?, name=?, content=?, ofile=?, sfile=? "
+					 + " where idx=? and pass=? ";
+			
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getName());
+			psmt.setString(3, dto.getContent());
+			psmt.setString(4, dto.getOfile());
+			psmt.setString(5, dto.getSfile());
+			psmt.setString(6, dto.getIdx());
+			psmt.setString(7, dto.getPass());
 	
-	
-	
-	
+			// 쿼리문 실행
+			result = psmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("게시물 수정 중 에외 발생");
+			e.printStackTrace();
+		}
+		return result;
+		
+		
+
+	}
 	
 }

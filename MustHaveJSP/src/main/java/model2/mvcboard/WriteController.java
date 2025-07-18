@@ -56,7 +56,20 @@ public class WriteController extends HttpServlet {
 		
 		//DAO를 통해 DB에 게시 내용 저장
 		MVCBoardDAO dao = new MVCBoardDAO();
+		
+		// 더미 데이터
+//		int iResult = 0;
+//		for (int i = 7; i<100; i++) {
+//			dto.setName("Test" +i);
+//			dto.setTitle("테스트제목" + i);
+//			dto.setContent("테스트내용" + i);
+//			dto.setPass("1111");
+//			
+//			iResult = dao.insertWrite(dto);
+//		}
+		
 		int result = dao.insertWrite(dto);
+		
 		dao.close();
 		
 		// 성공 or 실패?
